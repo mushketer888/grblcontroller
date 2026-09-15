@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="machineStatus" type="in.co.gorest.grblcontroller.listeners.MachineStatusListener" />
+        <variable name="machineStatus" type="com.iljal.grblcontroller.listeners.MachineStatusListener" />
     </data>
 
     <ScrollView
@@ -50,7 +50,7 @@
 
                 <TableRow>
 
-                    <in.co.gorest.grblcontroller.helpers.AngledTextTopLeft
+                    <com.iljal.grblcontroller.helpers.AngledTextTopLeft
                         android:id="@+id/jog_xy_top_left"
                         android:layout_width="0dp"
                         android:layout_weight="0.22"
@@ -70,7 +70,7 @@
                         android:text="{fa-caret-up 52dp}"
                         tools:ignore="HardcodedText,VisualLintButtonSize" />
 
-                    <in.co.gorest.grblcontroller.helpers.AngledText45
+                    <com.iljal.grblcontroller.helpers.AngledText45
                         android:enabled="@{!machineStatus.state.equals(machineStatus.STATE_NOT_CONNECTED)}"
                         android:id="@+id/jog_xy_top_right"
                         android:tag="$J=%1$sG91X%2$sY%2$sF%3$s"
@@ -140,7 +140,7 @@
 
                 <TableRow>
 
-                    <in.co.gorest.grblcontroller.helpers.AngledTextBottomLeft
+                    <com.iljal.grblcontroller.helpers.AngledTextBottomLeft
                         android:id="@+id/jog_xy_bottom_left"
                         android:layout_width="0dp"
                         android:layout_weight="0.22"
@@ -160,7 +160,7 @@
                         android:text="{fa-caret-down 52dp}"
                         tools:ignore="HardcodedText,VisualLintButtonSize" />
 
-                    <in.co.gorest.grblcontroller.helpers.AngledText225
+                    <com.iljal.grblcontroller.helpers.AngledText225
                         android:enabled="@{!machineStatus.state.equals(machineStatus.STATE_NOT_CONNECTED)}"
                         android:id="@+id/jog_xy_bottom_right"
                         android:tag="$J=%1$sG91X%2$sY-%2$sF%3$s"

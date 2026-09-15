@@ -96,7 +96,7 @@
 -keep public class android.support.design.R$* { *; }
 
 # Ensures entities remain un-obfuscated so table and columns are named correctly
--keep class in.co.gorest.grblcontroller.model.** { *; }
+-keep class com.iljal.grblcontroller.model.** { *; }
 -keep class * extends android.webkit.WebChromeClient { *; }
 -dontwarn im.delight.android.webview.**
 -keep class com.squareup.** {*;}
