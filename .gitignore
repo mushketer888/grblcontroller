@@ -9,3 +9,8 @@ gradle
 /build
 /captures
 .externalNativeBuild
+
+/release
+*.log
+TASK_LOG.md
+

@@ -316,7 +316,11 @@ public class GrblUsbSerialService extends Service {
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(ACTION_USB_DETACHED);
         filter.addAction(ACTION_USB_ATTACHED);
-        registerReceiver(usbReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(usbReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(usbReceiver, filter);
+        }
     }
 
     /*
@@ -324,7 +328,9 @@ public class GrblUsbSerialService extends Service {
      */
     @SuppressLint("UnspecifiedImmutableFlag")
     private void requestUserPermission() {
-        PendingIntent mPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+        Intent permissionIntent = new Intent(ACTION_USB_PERMISSION);
+        permissionIntent.setPackage(getPackageName());
+        PendingIntent mPendingIntent = PendingIntent.getBroadcast(this, 0, permissionIntent, PendingIntent.FLAG_IMMUTABLE);
         usbManager.requestPermission(device, mPendingIntent);
     }
 

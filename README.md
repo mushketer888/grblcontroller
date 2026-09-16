@@ -41,3 +41,7 @@
 - Felipe Herranz https://github.com/felHR85/UsbSerial
 - nbsp-team https://github.com/nbsp-team/MaterialFilePicker
 - Chuang Guangquan https://github.com/warkiz/IndicatorSeekBar
+
+### About this fork
+
+This is a fork of the original [zeevy/grblcontroller](https://github.com/zeevy/grblcontroller) — a working, live app on Google Play. Since the original author appears to have abandoned the project (no updates in years), I took it over to keep it maintained: modernized the build toolchain (AGP 8 / Gradle 8 / targetSdk 36), fixed the Android 12+ Bluetooth permission and Android 14+ foreground-service/receiver crashes, and republished it under my own Play listing as `com.iljal.grblcontoller`.

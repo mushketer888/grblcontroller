@@ -38,6 +38,7 @@ import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.joanzapata.iconify.IconDrawable;
@@ -62,6 +63,8 @@ import com.iljal.grblcontoller.util.GrblUtils;
 
 public class BluetoothConnectionActivity extends GrblActivity {
 
+    private static final int REQUEST_BT_PERMISSIONS = 100;
+
     private GrblServiceMessageHandler grblServiceMessageHandler;
     private BluetoothAdapter bluetoothAdapter = null;
     private boolean mBound = false;
@@ -75,9 +78,10 @@ public class BluetoothConnectionActivity extends GrblActivity {
         if (bluetoothAdapter == null) {
             showToastMessage(getString(R.string.text_no_bluetooth_adapter));
             restartInUsbMode();
+        } else if (hasBluetoothPermissions()) {
+            bindBluetoothService();
         } else {
-            Intent intent = new Intent(getApplicationContext(), GrblBluetoothSerialService.class);
-            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+            ActivityCompat.requestPermissions(this, requiredBluetoothPermissions(), REQUEST_BT_PERMISSIONS);
         }
 
         grblServiceMessageHandler = new BluetoothConnectionActivity.GrblServiceMessageHandler(this);
@@ -96,17 +100,18 @@ public class BluetoothConnectionActivity extends GrblActivity {
     public void onStart() {
         super.onStart();
 
+        if (!hasBluetoothPermissions()) {
+            ActivityCompat.requestPermissions(this, requiredBluetoothPermissions(), REQUEST_BT_PERMISSIONS);
+            return;
+        }
+
         if (!bluetoothAdapter.isEnabled()) {
             Thread thread = new Thread() {
                 @Override
                 public void run() {
                     try {
-                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                            EventBus.getDefault().post(new UiToastEvent(getString(R.string.text_no_bluetooth_permission), true, true));
-                            restartInUsbMode();
-                        }
                         bluetoothAdapter.enable();
-                    }catch (RuntimeException e){
+                    } catch (RuntimeException e) {
                         EventBus.getDefault().post(new UiToastEvent(getString(R.string.text_no_bluetooth_permission), true, true));
                         restartInUsbMode();
                     }
@@ -114,6 +119,38 @@ public class BluetoothConnectionActivity extends GrblActivity {
             };
             thread.start();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_BT_PERMISSIONS) {
+            if (hasBluetoothPermissions()) {
+                if (!mBound) {
+                    bindBluetoothService();
+                }
+            } else {
+                EventBus.getDefault().post(new UiToastEvent(getString(R.string.text_no_bluetooth_permission), true, true));
+                restartInUsbMode();
+            }
+        }
+    }
+
+    private boolean hasBluetoothPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
+    }
+
+    private String[] requiredBluetoothPermissions() {
+        return new String[]{android.Manifest.permission.BLUETOOTH_CONNECT, android.Manifest.permission.BLUETOOTH_SCAN};
+    }
+
+    private void bindBluetoothService() {
+        Intent intent = new Intent(getApplicationContext(), GrblBluetoothSerialService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override

@@ -157,7 +157,11 @@ public class UsbConnectionActivity extends GrblActivity{
         filter.addAction(GrblUsbSerialService.ACTION_USB_DISCONNECTED);
         filter.addAction(GrblUsbSerialService.ACTION_USB_NOT_SUPPORTED);
         filter.addAction(GrblUsbSerialService.ACTION_USB_PERMISSION_NOT_GRANTED);
-        registerReceiver(mUsbReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(mUsbReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(mUsbReceiver, filter);
+        }
     }
 
     /*
