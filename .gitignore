@@ -13,4 +13,5 @@ gradle
 /release
 *.log
 TASK_LOG.md
+app/google-services.json
 
