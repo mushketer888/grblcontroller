@@ -23,7 +23,7 @@
 - HC-05 Bluetooth module setup http://www.buildlog.net/blog/2017/10/using-the-hc-05-bluetooth-module/
 - HC-06 Bluetooth module setup https://github.com/zeevy/grblcontroller/wiki/Bluetooth-Setup-HC-06
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/>](https://play.google.com/store/apps/details?id=in.co.gorest.grblcontroller "Download from play store")
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/>](https://play.google.com/store/apps/details?id=com.iljal.grblcontoller "Download from play store")
 
 ### Limitations:
 - No trimming of decimal places
@@ -41,3 +41,7 @@
 - Felipe Herranz https://github.com/felHR85/UsbSerial
 - nbsp-team https://github.com/nbsp-team/MaterialFilePicker
 - Chuang Guangquan https://github.com/warkiz/IndicatorSeekBar
+
+### About this fork
+
+This is a fork of the original [zeevy/grblcontroller](https://github.com/zeevy/grblcontroller) — a working, live app on Google Play. Since the original author appears to have abandoned the project (no updates in years), I took it over to keep it maintained: modernized the build toolchain (AGP 8 / Gradle 8 / targetSdk 36), fixed the Android 12+ Bluetooth permission and Android 14+ foreground-service/receiver crashes, and republished it under my own Play listing as `com.iljal.grblcontoller`.
