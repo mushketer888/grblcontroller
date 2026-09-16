@@ -9,8 +9,8 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.iljal.grblcontroller"
-            android:targetClass="com.iljal.grblcontroller.SettingsActivity" />
+            android:targetPackage="com.iljal.grblcontoller"
+            android:targetClass="com.iljal.grblcontoller.SettingsActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
@@ -23,8 +23,8 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.iljal.grblcontroller"
-            android:targetClass="com.iljal.grblcontroller.AboutActivity" />
+            android:targetPackage="com.iljal.grblcontoller"
+            android:targetClass="com.iljal.grblcontoller.AboutActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 

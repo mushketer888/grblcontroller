@@ -2,8 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="console" type="com.iljal.grblcontroller.listeners.ConsoleLoggerListener" />
-        <variable name="machineStatus" type="com.iljal.grblcontroller.listeners.MachineStatusListener" />
+        <variable name="console" type="com.iljal.grblcontoller.listeners.ConsoleLoggerListener" />
+        <variable name="machineStatus" type="com.iljal.grblcontoller.listeners.MachineStatusListener" />
     </data>
 
     <ScrollView

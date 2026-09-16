@@ -23,7 +23,7 @@
 - HC-05 Bluetooth module setup http://www.buildlog.net/blog/2017/10/using-the-hc-05-bluetooth-module/
 - HC-06 Bluetooth module setup https://github.com/zeevy/grblcontroller/wiki/Bluetooth-Setup-HC-06
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/>](https://play.google.com/store/apps/details?id=com.iljal.grblcontroller "Download from play store")
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/>](https://play.google.com/store/apps/details?id=com.iljal.grblcontoller "Download from play store")
 
 ### Limitations:
 - No trimming of decimal places

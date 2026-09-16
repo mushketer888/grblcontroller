@@ -71,21 +71,21 @@
 
         <Preference android:title="@string/text_jogging_preferences"/>
 
-        <com.iljal.grblcontroller.helpers.NumberPickerPreference
+        <com.iljal.grblcontoller.helpers.NumberPickerPreference
             android:icon="@drawable/ic_format_list_numbered_black_24dp"
             android:defaultValue="10"
             android:key="@string/preference_jogging_max_step_size"
             android:title="@string/text_jogging_max_steps"
             android:summary="@string/text_jogging_max_steps_desc" />
 
-        <com.iljal.grblcontroller.helpers.NumberPickerPreference
+        <com.iljal.grblcontoller.helpers.NumberPickerPreference
             android:icon="@drawable/ic_format_list_numbered_black_24dp"
             android:defaultValue="5"
             android:key="@string/preference_jogging_max_step_size_z"
             android:title="@string/text_jogging_max_steps_z"
             android:summary="@string/text_jogging_max_steps_desc_z" />
 
-        <com.iljal.grblcontroller.helpers.MyEditTextPreference
+        <com.iljal.grblcontoller.helpers.MyEditTextPreference
             android:textSize="14sp"
             android:padding="8dp"
             android:background="@drawable/rounded_border_edit_text"
@@ -97,7 +97,7 @@
             android:title="Quick step XY small"
             android:summary=""/>
 
-        <com.iljal.grblcontroller.helpers.MyEditTextPreference
+        <com.iljal.grblcontoller.helpers.MyEditTextPreference
             android:textSize="14sp"
             android:padding="8dp"
             android:background="@drawable/rounded_border_edit_text"
@@ -109,7 +109,7 @@
             android:title="Quick step XY medium"
             android:summary=""/>
 
-        <com.iljal.grblcontroller.helpers.MyEditTextPreference
+        <com.iljal.grblcontoller.helpers.MyEditTextPreference
             android:textSize="14sp"
             android:padding="8dp"
             android:background="@drawable/rounded_border_edit_text"
@@ -121,7 +121,7 @@
             android:title="Quick step XY large"
             android:summary=""/>
 
-        <com.iljal.grblcontroller.helpers.MyEditTextPreference
+        <com.iljal.grblcontoller.helpers.MyEditTextPreference
             android:textSize="14sp"
             android:padding="8dp"
             android:background="@drawable/rounded_border_edit_text"
@@ -133,7 +133,7 @@
             android:title="Quick step Z small"
             android:summary=""/>
 
-        <com.iljal.grblcontroller.helpers.MyEditTextPreference
+        <com.iljal.grblcontoller.helpers.MyEditTextPreference
             android:textSize="14sp"
             android:padding="8dp"
             android:background="@drawable/rounded_border_edit_text"
@@ -145,7 +145,7 @@
             android:title="Quick step Z medium"
             android:summary=""/>
 
-        <com.iljal.grblcontroller.helpers.MyEditTextPreference
+        <com.iljal.grblcontoller.helpers.MyEditTextPreference
             android:textSize="14sp"
             android:padding="8dp"
             android:background="@drawable/rounded_border_edit_text"

@@ -1,17 +1,28 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'com.iljal.grblcontroller'
+    namespace 'com.iljal.grblcontoller'
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.iljal.grblcontroller"
+        applicationId "com.iljal.grblcontoller"
         minSdk 23
         targetSdk 36
-        versionCode 39
-        versionName "2.58"
+        versionCode 40
+        versionName "2.59"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
     }
 
     buildTypes {
@@ -20,6 +31,7 @@ android {
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             debuggable true
