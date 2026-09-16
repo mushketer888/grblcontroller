@@ -8,8 +8,8 @@ android {
         applicationId "com.iljal.grblcontoller"
         minSdk 23
         targetSdk 36
-        versionCode 42
-        versionName "2.61"
+        versionCode 44
+        versionName "2.63"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

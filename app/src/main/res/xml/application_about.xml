@@ -30,7 +30,7 @@
         android:title="Source / Issue tracker">
         <intent
             android:action="android.intent.action.VIEW"
-            android:data="https://github.com/zeevy/grblcontroller" />
+            android:data="https://github.com/mushketer888/grblcontroller" />
     </Preference>
 
     <Preference
@@ -40,25 +40,6 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:data="market://details?id=com.iljal.grblcontoller"/>
-    </Preference>
-
-    <Preference
-        android:key="buy_grbl_controller_plus"
-        android:icon="@drawable/ic_attach_money_black_36dp"
-        android:summary="@string/text_buy_app_summary"
-        android:title="@string/text_buy_app">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="market://details?id=com.iljal.grblcontoller.plus"/>
-    </Preference>
-
-    <Preference
-        android:icon="@drawable/ic_contact_mail_black_36dp"
-        android:summary="zeevy@outlook.in"
-        android:title="Contact Developer">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="mailto:zeevy@outlook.in?subject=Grbl Controller"/>
     </Preference>
 
 </PreferenceScreen>

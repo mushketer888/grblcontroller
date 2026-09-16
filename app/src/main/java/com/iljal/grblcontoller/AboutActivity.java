@@ -21,14 +21,11 @@
 
 package com.iljal.grblcontoller;
 
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
-
-import java.util.Objects;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -51,9 +48,6 @@ public class AboutActivity extends AppCompatActivity {
             getPreferenceManager().setSharedPreferencesName(getString(R.string.shared_preference_key));
             addPreferencesFromResource(R.xml.application_about);
             findPreference("pref_app_version").setSummary(BuildConfig.VERSION_NAME);
-            if(this.hasPaidVersion()){
-                getPreferenceScreen().removePreference(Objects.requireNonNull(findPreference("buy_grbl_controller_plus")));
-            }
 
         }
 
@@ -61,17 +55,6 @@ public class AboutActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle bundle, String s) {
 
         }
-
-        public boolean hasPaidVersion() {
-            PackageManager pm = requireActivity().getPackageManager();
-            try {
-                pm.getPackageInfo("com.iljal.grblcontoller.plus", PackageManager.GET_ACTIVITIES);
-                return true;
-            } catch (PackageManager.NameNotFoundException ignored) {}
-
-            return false;
-        }
-
 
     }
 }
