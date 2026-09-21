@@ -47,6 +47,8 @@ public class SplashActivity extends AppCompatActivity {
 
         if (Constants.SERIAL_CONNECTION_TYPE_USB_OTG.equals(defaultConnection)) {
             startActivity(new Intent(SplashActivity.this, UsbConnectionActivity.class));
+        } else if (Constants.SERIAL_CONNECTION_TYPE_TCP.equals(defaultConnection)) {
+            startActivity(new Intent(SplashActivity.this, TcpConnectionActivity.class));
         } else {
             startActivity(new Intent(SplashActivity.this, BluetoothConnectionActivity.class));
         }

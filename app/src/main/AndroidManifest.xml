@@ -83,6 +83,7 @@
             android:resizeableActivity="false"
             android:screenOrientation="portrait"
             android:supportsPictureInPicture="false"
+            android:theme="@style/SettingsTheme"
             tools:targetApi="n"
             tools:ignore="LockedOrientationActivity,NonResizeableActivity" />
         <activity
@@ -106,6 +107,11 @@
             android:exported="false"
             android:foregroundServiceType="connectedDevice" />
         <service
+            android:name=".service.GrblTcpSerialService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+        <service
             android:name=".service.FileStreamerIntentService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
@@ -116,6 +122,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".TcpConnectionActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

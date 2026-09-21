@@ -60,6 +60,8 @@
     <string name="preference_custom_button_four_long_click" translatable="false">custom_button_four_long_click</string>
     <string name="preference_custom_button_four_confirm" translatable="false">custom_button_four_confirm</string>
     <string name="preference_default_serial_connection_type" translatable="false">default_serial_connection_type</string>
+    <string name="preference_tcp_host" translatable="false">tcp_host</string>
+    <string name="preference_tcp_port" translatable="false">tcp_port</string>
     <string name="preference_check_machine_position_before_job" translatable="false">check_machine_position_before_job</string>
     <string name="preference_enable_haptic_feedback" translatable="false">enable_haptic_feedback</string>
     <string name="preference_xy_jog_pad_rotation" translatable="false">xy_jog_pad_rotation</string>
@@ -79,6 +81,7 @@
     <string translatable="false" name="preference_ignore_error_20">preference_ignore_error_20</string>
     <string translatable="false" name="preference_update_pool_interval">preference_update_pool_interval</string>
     <string name="usb_serial_baud_rate" translatable="false">usb_serial_baud_rate</string>
+    <string name="preference_usb_device_name" translatable="false">usb_device_name</string>
     <string name="preference_remember_last_file_location" translatable="false">remember_last_file_location</string>
     <string name="most_recent_selected_file" translatable="false">most_recent_selected_file</string>
     <string name="preference_single_step_mode" translatable="false">preference_single_step_mode</string>
@@ -159,6 +162,10 @@
     <string name="text_quick_jogging_desc">configure quick jogging buttons</string>
     <string name="text_button_4_behaviour">Configure Custom Button 4 Behaviour</string>
     <string name="text_default_connection">Default connection</string>
+    <string name="text_tcp_connection">TCP</string>
+    <string name="text_tcp_connection_title">TCP connection</string>
+    <string name="text_tcp_host">Host or IP address</string>
+    <string name="text_tcp_port">Port</string>
     <string name="text_rotate_jogging_pad">Rotate XY jogging pad</string>
     <string name="text_streaming_stop_button_behaviour">Streaming stop button behaviour</string>
     <string name="text_check_machine_position">Check machine position</string>
@@ -175,11 +182,13 @@
     <string-array name="preference_entries_default_connection">
         <item>Bluetooth</item>
         <item>USB OTG (115200 baud)</item>
+        <item>TCP</item>
     </string-array>
 
     <string-array name="preference_values_default_connection">
         <item>bluetooth</item>
         <item>usbotg</item>
+        <item>tcp</item>
     </string-array>
 
     <string-array name="preference_entries_stop_button_behaviour">
@@ -262,6 +271,7 @@
     <string name="text_grbl_error_format">Error:%d %s</string>
     <string name="text_bluetooth_service_foreground_message">This will handle all Bluetooth communication.</string>
     <string name="text_usb_service_foreground_message">This will handle all Usb communication.</string>
+    <string name="text_tcp_service_foreground_message">This will handle TCP communication.</string>
     <string name="text_bluetooth_service">Bluetooth service</string>
     <string name="text_usb_service">USB otg service</string>
     <string name="text_ok">OK</string>

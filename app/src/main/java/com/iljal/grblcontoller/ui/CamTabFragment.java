@@ -119,7 +119,7 @@ public class CamTabFragment extends BaseFragment {
 
 
         final RelativeLayout camFeedRateView = view.findViewById(R.id.cam_feed_rate_view);
-        camFeedRateView.setOnClickListener(new View.OnClickListener() {
+        if (camFeedRateView != null) camFeedRateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setCamFeedRate();
@@ -127,7 +127,7 @@ public class CamTabFragment extends BaseFragment {
         });
 
         RelativeLayout camZTraversalView = view.findViewById(R.id.cam_z_traversal_view);
-        camZTraversalView.setOnClickListener(new View.OnClickListener() {
+        if (camZTraversalView != null) camZTraversalView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setCamZTraversal();
@@ -135,28 +135,28 @@ public class CamTabFragment extends BaseFragment {
         });
 
         final RelativeLayout camStepOverView = view.findViewById(R.id.cam_step_over_view);
-        camStepOverView.setOnClickListener(new View.OnClickListener() {
+        if (camStepOverView != null) camStepOverView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setCamStepOver();
             }
         });
         final RelativeLayout camZdeepView = view.findViewById(R.id.cam_z_deep_view);
-        camZdeepView.setOnClickListener(new View.OnClickListener() {
+        if (camZdeepView != null) camZdeepView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setCamZDeep();
             }
         });
         final RelativeLayout camZstepView = view.findViewById(R.id.cam_z_step_view);
-        camZstepView.setOnClickListener(new View.OnClickListener() {
+        if (camZstepView != null) camZstepView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setCamZStep();
             }
         });
         final RelativeLayout camToolDiaView = view.findViewById(R.id.cam_tool_dia_view);
-        camToolDiaView.setOnClickListener(new View.OnClickListener() {
+        if (camToolDiaView != null) camToolDiaView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setCamToolDia();
@@ -164,7 +164,7 @@ public class CamTabFragment extends BaseFragment {
         });
 
         final Spinner jobTypeSpinner = view.findViewById(R.id.job_type_spinner);
-        jobTypeSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+        if (jobTypeSpinner != null) jobTypeSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -186,22 +186,22 @@ public class CamTabFragment extends BaseFragment {
         camToText = view.findViewById(R.id.cam_to_text);
 
         camFeedRate = view.findViewById(R.id.cam_feed_rate);
-        camFeedRate.setText(sharedPref.getString(getString(R.string.preference_cam_feed_rate), String.valueOf(Constants.CAM_FEED_RATE)) + this.editIcon);
+        if (camFeedRate != null) camFeedRate.setText(sharedPref.getString(getString(R.string.preference_cam_feed_rate), String.valueOf(Constants.CAM_FEED_RATE)) + this.editIcon);
 
         camZTraversal = view.findViewById(R.id.cam_z_traversal);
-        camZTraversal.setText(sharedPref.getString(getString(R.string.preference_cam_z_traversal), String.valueOf(Constants.CAM_TRAVERSAL)) + this.editIcon);
+        if (camZTraversal != null) camZTraversal.setText(sharedPref.getString(getString(R.string.preference_cam_z_traversal), String.valueOf(Constants.CAM_TRAVERSAL)) + this.editIcon);
 
         camStepOver = view.findViewById(R.id.cam_step_over);
-        camStepOver.setText(sharedPref.getString(getString(R.string.preference_cam_step_over), String.valueOf(Constants.CAM_STEP_OVER)) + this.editIcon);
+        if (camStepOver != null) camStepOver.setText(sharedPref.getString(getString(R.string.preference_cam_step_over), String.valueOf(Constants.CAM_STEP_OVER)) + this.editIcon);
 
         camZDeep = view.findViewById(R.id.cam_z_deep);
-        camZDeep.setText(sharedPref.getString(getString(R.string.preference_cam_z_deep), String.valueOf(Constants.CAM_ZDEEP)) + this.editIcon);
+        if (camZDeep != null) camZDeep.setText(sharedPref.getString(getString(R.string.preference_cam_z_deep), String.valueOf(Constants.CAM_ZDEEP)) + this.editIcon);
 
         camZStep = view.findViewById(R.id.cam_z_step);
-        camZStep.setText(sharedPref.getString(getString(R.string.preference_cam_z_step), String.valueOf(Constants.CAM_ZSTEP)) + this.editIcon);
+        if (camZStep != null) camZStep.setText(sharedPref.getString(getString(R.string.preference_cam_z_step), String.valueOf(Constants.CAM_ZSTEP)) + this.editIcon);
 
         camToolDia = view.findViewById(R.id.cam_tool_dia);
-        camToolDia.setText(sharedPref.getString(getString(R.string.preference_cam_tool_dia), String.valueOf(Constants.CAM_TOOL_DIA)) + this.editIcon);
+        if (camToolDia != null) camToolDia.setText(sharedPref.getString(getString(R.string.preference_cam_tool_dia), String.valueOf(Constants.CAM_TOOL_DIA)) + this.editIcon);
 
 
 

@@ -100,6 +100,7 @@ public class GrblUsbSerialService extends Service {
     public static final String ACTION_USB_DISCONNECTED = "com.felhr.usbservice.USB_DISCONNECTED";
     public static final String ACTION_CDC_DRIVER_NOT_WORKING = "com.felhr.connectivityservices.ACTION_CDC_DRIVER_NOT_WORKING";
     public static final String ACTION_USB_DEVICE_NOT_WORKING = "com.felhr.connectivityservices.ACTION_USB_DEVICE_NOT_WORKING";
+    public static final String EXTRA_USB_DEVICE_NAME = "usb_device_name";
     public static final int MESSAGE_FROM_SERIAL_PORT = 0;
     public static final int CTS_CHANGE = 1;
     public static final int DSR_CHANGE = 2;
@@ -115,6 +116,7 @@ public class GrblUsbSerialService extends Service {
     private UsbDevice device;
     private UsbDeviceConnection connection;
     private UsbSerialDevice serialPort;
+    private String preferredDeviceName;
 
     private boolean serialPortConnected;
     private boolean receiverRegistered;
@@ -139,8 +141,6 @@ public class GrblUsbSerialService extends Service {
         setFilter();
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         try {
-            findSerialPortDevice();
-
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     startForeground(Constants.USB_OTG_SERVICE_NOTIFICATION_ID, this.getNotification(null),
@@ -167,6 +167,8 @@ public class GrblUsbSerialService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null) preferredDeviceName = intent.getStringExtra(EXTRA_USB_DEVICE_NAME);
+        if (!serialPortConnected) findSerialPortDevice(preferredDeviceName);
         return Service.START_NOT_STICKY;
     }
 
@@ -198,10 +200,16 @@ public class GrblUsbSerialService extends Service {
     }
 
     public void serialWriteString(String s){
+        if (s == null) return;
         this.serialWriteBytes(s.getBytes());
         this.serialWriteBytes(BYTE_NEW_LINE);
         //Log.d("SERIAL WRITE", s);
-        serialUsbCommunicationHandler.obtainMessage(Constants.MESSAGE_WRITE, s.length(), -1, s).sendToTarget();
+        SerialUsbCommunicationHandler handler = serialUsbCommunicationHandler;
+        if (handler != null) {
+            handler.obtainMessage(Constants.MESSAGE_WRITE, s.length(), -1, s).sendToTarget();
+        } else {
+            Log.w(TAG, "Ignoring serial write notification while USB handler is unavailable");
+        }
     }
 
 
@@ -311,7 +319,7 @@ public class GrblUsbSerialService extends Service {
                     arg0.sendBroadcast(intent);
                 }
             }else if(Objects.equals(arg1.getAction(), ACTION_USB_ATTACHED)) {
-                if(!serialPortConnected) findSerialPortDevice();
+                if(!serialPortConnected) findSerialPortDevice(preferredDeviceName);
             } else if (Objects.equals(arg1.getAction(), ACTION_USB_DETACHED)) {
                 Intent intent = new Intent(ACTION_USB_DISCONNECTED);
                 arg0.sendBroadcast(intent);
@@ -324,39 +332,30 @@ public class GrblUsbSerialService extends Service {
         }
     };
 
-    private void findSerialPortDevice() {
-        // This snippet will try to open the first encountered usb device connected, excluding usb root hubs
+    private void findSerialPortDevice(String preferredName) {
         try {
             HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
             if (!usbDevices.isEmpty()) {
-                boolean keep = true;
+                UsbDevice firstSerialDevice = null;
+                UsbDevice selectedDevice = null;
                 for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
-                    device = entry.getValue();
-                    int deviceVID = device.getVendorId();
-                    int devicePID = device.getProductId();
-
-                    if (deviceVID != 0x1d6b && (devicePID != 0x0001 && devicePID != 0x0002 && devicePID != 0x0003) && deviceVID != 0x5c6 && devicePID != 0x904c) {
-
-                        // There is a device connected to our Android device. Try to open it as a Serial Port.
-                        requestUserPermission();
-                        keep = false;
-                    } else {
-                        connection = null;
-                        device = null;
+                    UsbDevice candidate = entry.getValue();
+                    int deviceVID = candidate.getVendorId();
+                    int devicePID = candidate.getProductId();
+                    boolean rootHub = deviceVID == 0x1d6b
+                            && (devicePID == 0x0001 || devicePID == 0x0002 || devicePID == 0x0003);
+                    boolean excludedHub = deviceVID == 0x5c6 && devicePID == 0x904c;
+                    if (rootHub || excludedHub) continue;
+                    if (firstSerialDevice == null) firstSerialDevice = candidate;
+                    if (preferredName != null && preferredName.equals(candidate.getDeviceName())) {
+                        selectedDevice = candidate;
                     }
-
-                    if (!keep)
-                        break;
                 }
-                if (!keep) {
-                    // There is no USB devices connected (but usb host were listed). Send an intent to MainActivity.
-                    Intent intent = new Intent(ACTION_NO_USB);
-                    sendBroadcast(intent);
-                }
+                device = selectedDevice != null ? selectedDevice : firstSerialDevice;
+                if (device != null) requestUserPermission();
+                else sendBroadcast(new Intent(ACTION_NO_USB));
             } else {
-                // There is no USB devices connected. Send an intent to MainActivity
-                Intent intent = new Intent(ACTION_NO_USB);
-                sendBroadcast(intent);
+                sendBroadcast(new Intent(ACTION_NO_USB));
             }
         }catch (NullPointerException e){
             // There is no USB devices connected. Send an intent to MainActivity
