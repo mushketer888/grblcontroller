@@ -3,7 +3,9 @@ package com.iljal.grblcontoller.service;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -61,7 +63,18 @@ public class GrblTcpSerialService extends Service {
     public void onCreate() {
         super.onCreate();
         new NotificationHelper(this).createChannels();
-        startForeground(NOTIFICATION_ID, getNotification());
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(NOTIFICATION_ID, getNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+            } else {
+                startForeground(NOTIFICATION_ID, getNotification());
+            }
+        } catch (SecurityException e) {
+            // Missing FOREGROUND_SERVICE_DATA_SYNC permission or background-start restriction
+            Log.w(TAG, "Unable to start TCP service in foreground", e);
+            stopSelf();
+            return;
+        }
         serialHandler = new SerialTcpCommunicationHandler(this);
         EventBus.getDefault().register(this);
     }
