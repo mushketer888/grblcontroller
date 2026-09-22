@@ -323,8 +323,13 @@ public class GrblUsbSerialService extends Service {
             } else if (Objects.equals(arg1.getAction(), ACTION_USB_DETACHED)) {
                 Intent intent = new Intent(ACTION_USB_DISCONNECTED);
                 arg0.sendBroadcast(intent);
-                serialUsbCommunicationHandler.stopGrblStatusUpdateService();
-                if(serialPortConnected){
+                // The handler is null when onCreate bailed out early (e.g. SecurityException
+                // from startForeground), but the receiver is already registered.
+                SerialUsbCommunicationHandler handler = serialUsbCommunicationHandler;
+                if (handler != null) {
+                    handler.stopGrblStatusUpdateService();
+                }
+                if (serialPortConnected && serialPort != null) {
                     serialPort.close();
                 }
                 serialPortConnected = false;
