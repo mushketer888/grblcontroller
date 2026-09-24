@@ -227,11 +227,13 @@
     <string-array name="preference_entries_default_connection">
         <item>Bluetooth</item>
         <item>USB OTG (115200 baud)</item>
+        <item>TCP</item>
     </string-array>
 
     <string-array name="preference_values_default_connection">
         <item>bluetooth</item>
         <item>usbotg</item>
+        <item>tcp</item>
     </string-array>
 
     <string-array name="preference_entries_stop_button_behaviour">

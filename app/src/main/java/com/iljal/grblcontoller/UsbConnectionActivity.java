@@ -36,8 +36,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
@@ -59,6 +65,8 @@ public class UsbConnectionActivity extends GrblActivity{
     private GrblUsbSerialService grblUsbSerialService;
     private GrblServiceMessageHandler grblServiceMessageHandler;
     private boolean mBound = false;
+    private boolean usbStartRequested = false;
+    private boolean usbSelectionPrompted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +84,68 @@ public class UsbConnectionActivity extends GrblActivity{
         super.onStart();
         setFilters();  // Start listening notifications from UsbService
 
-        Intent intent = new Intent(getApplicationContext(), GrblUsbSerialService.class);
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1){
-            getApplicationContext().startForegroundService(intent);
-        }else{
-            startService(intent);
+        if (!usbStartRequested) selectUsbDeviceAndStart();
+    }
+
+    private void selectUsbDeviceAndStart() {
+        UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        HashMap<String, UsbDevice> devices = usbManager == null ? new HashMap<>() : usbManager.getDeviceList();
+        List<UsbDevice> serialDevices = new ArrayList<>();
+        for (UsbDevice candidate : devices.values()) {
+            int vendorId = candidate.getVendorId();
+            int productId = candidate.getProductId();
+            boolean rootHub = vendorId == 0x1d6b && (productId == 0x0001 || productId == 0x0002 || productId == 0x0003);
+            boolean excludedHub = vendorId == 0x5c6 && productId == 0x904c;
+            if (!rootHub && !excludedHub) serialDevices.add(candidate);
         }
+
+        if (serialDevices.size() <= 1) {
+            String deviceName = serialDevices.isEmpty() ? null : serialDevices.get(0).getDeviceName();
+            if (deviceName != null) {
+                sharedPref.edit().putString(getString(R.string.preference_usb_device_name), deviceName).apply();
+            }
+            startUsbService(deviceName);
+            return;
+        }
+        if (usbSelectionPrompted) return;
+        usbSelectionPrompted = true;
+
+        String[] labels = new String[serialDevices.size()];
+        String selectedName = sharedPref.getString(getString(R.string.preference_usb_device_name), null);
+        int[] selectedIndex = {0};
+        for (int i = 0; i < serialDevices.size(); i++) {
+            UsbDevice candidate = serialDevices.get(i);
+            String product = candidate.getProductName();
+            labels[i] = candidate.getDeviceName() + "  VID " + candidate.getVendorId()
+                    + " / PID " + candidate.getProductId()
+                    + (product == null ? "" : "  " + product);
+            if (candidate.getDeviceName().equals(selectedName)) selectedIndex[0] = i;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select USB device")
+                .setSingleChoiceItems(labels, selectedIndex[0], (dialog, which) -> selectedIndex[0] = which)
+                .setNegativeButton(R.string.text_cancel, (dialog, which) -> finish())
+                .setPositiveButton(R.string.text_connect, (dialog, which) -> {
+                    String deviceName = serialDevices.get(selectedIndex[0]).getDeviceName();
+                    sharedPref.edit().putString(getString(R.string.preference_usb_device_name), deviceName).apply();
+                    startUsbService(deviceName);
+                })
+                .setOnCancelListener(dialog -> finish())
+                .show();
+    }
+
+    private void startUsbService(String deviceName) {
+        usbStartRequested = true;
+        Intent intent = new Intent(getApplicationContext(), GrblUsbSerialService.class);
+        if (deviceName != null) intent.putExtra(GrblUsbSerialService.EXTRA_USB_DEVICE_NAME, deviceName);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) getApplicationContext().startForegroundService(intent);
+        else startService(intent);
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        onGcodeCommandReceived("$10=1");
+        if (mBound && grblUsbSerialService != null) onGcodeCommandReceived("$10=1");
         unregisterReceiver(mUsbReceiver);
         if(mBound){
             grblUsbSerialService.setMessageHandler(null);
@@ -96,6 +154,7 @@ public class UsbConnectionActivity extends GrblActivity{
         }
         stopService(new Intent(this, GrblUsbSerialService.class));
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override

@@ -155,7 +155,8 @@ public class FileStreamerIntentService extends IntentService{
                 startForeground(Constants.FILE_STREAMING_NOTIFICATION_ID, getNotification(getString(R.string.text_file_checking_started), fileSenderListener.getGcodeFile().getName()));
             }
 
-            if(defaultConnectionType != null && defaultConnectionType.equals(Constants.SERIAL_CONNECTION_TYPE_BLUETOOTH)){
+            if(defaultConnectionType != null && (defaultConnectionType.equals(Constants.SERIAL_CONNECTION_TYPE_BLUETOOTH)
+                    || defaultConnectionType.equals(Constants.SERIAL_CONNECTION_TYPE_TCP))){
                 this.checkGcodeFile();
             }else{
                 this.startStreaming(555);

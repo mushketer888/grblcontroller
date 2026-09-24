@@ -24,6 +24,7 @@ package com.iljal.grblcontoller;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -56,12 +57,24 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            view.post(() -> {
+                if (getActivity() instanceof SettingsActivity) {
+                    androidx.appcompat.app.ActionBar actionBar = ((SettingsActivity) getActivity()).getSupportActionBar();
+                    if (actionBar != null && actionBar.getHeight() > view.getPaddingTop()) {
+                        view.setPadding(view.getPaddingLeft(), actionBar.getHeight(), view.getPaddingRight(), view.getPaddingBottom());
+                    }
+                }
+            });
+        }
+
+        @Override
         public void onResume() {
             super.onResume();
             String defaultConnectionType = getPreferenceManager().getSharedPreferences().getString(getString(R.string.preference_default_serial_connection_type), Constants.SERIAL_CONNECTION_TYPE_BLUETOOTH);
-            if(defaultConnectionType.equals(Constants.SERIAL_CONNECTION_TYPE_USB_OTG)){
-                getPreferenceScreen().findPreference(getString(R.string.preference_auto_connect)).setEnabled(false);
-            }
+            getPreferenceScreen().findPreference(getString(R.string.preference_auto_connect))
+                    .setEnabled(!defaultConnectionType.equals(Constants.SERIAL_CONNECTION_TYPE_USB_OTG));
 
             getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         }
